@@ -2,7 +2,9 @@ package com.galactus.group.api.graphql;
 
 import com.galactus.group.application.GroupService;
 import com.galactus.group.dto.GroupDto;
+import com.galactus.group.dto.UpdateGroupRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -24,5 +26,10 @@ public class GroupQueryResolver {
     @QueryMapping
     public List<GroupDto> getGroups() {
         return service.findAll();
+    }
+
+    @MutationMapping
+    public GroupDto updateGroup(@Argument("input")UpdateGroupRequest input) {
+        return service.update(input);
     }
 }

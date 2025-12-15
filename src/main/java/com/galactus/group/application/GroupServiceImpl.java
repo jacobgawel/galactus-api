@@ -26,6 +26,8 @@ public class GroupServiceImpl implements GroupService {
         this.repository = repository;
     }
 
+    @Override
+    @Transactional
     public GroupDto create(@NonNull CreateGroupRequest request) {
         var entity = new Group();
         entity.setSlug(request.getSlug());
@@ -55,8 +57,36 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional
     public GroupDto update(UpdateGroupRequest request) {
-        throw new UnsupportedOperationException("Feature incomplete.");
+        var entity = repository.findById(request.getId())
+                .orElseThrow(() -> new GroupNotFoundException(request.getId()));
+
+        if (request.getDisplayName() != null) {
+            entity.setDisplayName(request.getDisplayName());
+        }
+        if (request.getDescription() != null) {
+            entity.setDescription(request.getDescription());
+        }
+        if (request.nsfw != null) {
+            entity.setNsfw(request.getNsfw());
+        }
+        if (request.isPrivate != null) {
+            entity.setPrivate(request.getIsPrivate());
+        }
+        if (request.getIconUrl() != null) {
+            entity.setIconUrl(request.getIconUrl());
+        }
+        if (request.getBannerUrl() != null) {
+            entity.setBannerUrl(request.getBannerUrl());
+        }
+
+        try {
+            repository.saveAndFlush(entity);
+            return GroupMapper.toResponse(entity);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new SlugAlreadyTakenException(entity.getSlug());
+        }
     }
 
     public List<GroupDto> findAll() {

@@ -3,6 +3,20 @@ type Query {
     getGroups: [Group!]
 }
 
+type Mutation {
+    updateGroup(input: UpdateGroupInput): Group!
+}
+
+input UpdateGroupInput {
+    id: Int!
+    displayName: String
+    description: String
+    iconUrl: String
+    bannerUrl: String
+    nsfw: Boolean
+    isPrivate: Boolean
+}
+
 type Group {
     id: Int
     slug: String
