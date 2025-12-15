@@ -1,0 +1,17 @@
+type Query {
+    groupById(id: Int): Group
+}
+
+type Group {
+    id: Int
+    slug: String
+    displayName: String
+    description: String
+    hashedId: String
+    iconUrl: String
+    bannerUrl: String
+    nsfw: Boolean
+    isPrivate: Boolean
+    createdAt: String
+    updatedAt: String
+}

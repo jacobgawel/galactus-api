@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ApiExceptionHandler {
+public class RestApiExceptionHandler {
 
     @ExceptionHandler(SlugAlreadyTakenException.class)
     public ResponseEntity<ProblemDetail> handleSlugTaken(SlugAlreadyTakenException ex) {
