@@ -1,6 +1,8 @@
 package com.galactus.group.domain;
 
 
+import com.galactus.group.dto.GroupPatch;
+import com.galactus.group.dto.UpdateGroupRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -72,5 +74,26 @@ public class Group {
         slug = slug.trim().toLowerCase();
         displayName = displayName.trim();
         description = description.trim();
+    }
+
+    public void apply(GroupPatch request) {
+        if (request.displayName() != null) {
+            setDisplayName(request.displayName());
+        }
+        if (request.description() != null) {
+            setDescription(request.description());
+        }
+        if (request.nsfw() != null) {
+            setNsfw(request.nsfw());
+        }
+        if (request.isPrivate() != null) {
+            setPrivate(request.isPrivate());
+        }
+        if (request.iconUrl() != null) {
+            setIconUrl(request.iconUrl());
+        }
+        if (request.bannerUrl() != null) {
+            setBannerUrl(request.bannerUrl());
+        }
     }
 }

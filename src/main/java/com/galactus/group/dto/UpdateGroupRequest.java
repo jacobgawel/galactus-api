@@ -3,6 +3,7 @@ package com.galactus.group.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+// make sure to update GroupPatch if this changes
 @Getter
 @Setter
 public class UpdateGroupRequest {

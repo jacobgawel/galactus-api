@@ -6,6 +6,7 @@ import com.galactus.group.dto.GroupDto;
 import com.galactus.common.helpers.Base36Codec;
 import com.galactus.common.mappers.GroupMapper;
 import com.galactus.group.dto.CreateGroupRequest;
+import com.galactus.group.dto.GroupPatch;
 import com.galactus.group.dto.UpdateGroupRequest;
 import com.galactus.group.errors.GroupNotFoundException;
 import com.galactus.group.errors.SlugAlreadyTakenException;
@@ -62,24 +63,16 @@ public class GroupServiceImpl implements GroupService {
         var entity = repository.findById(request.getId())
                 .orElseThrow(() -> new GroupNotFoundException(request.getId()));
 
-        if (request.getDisplayName() != null) {
-            entity.setDisplayName(request.getDisplayName());
-        }
-        if (request.getDescription() != null) {
-            entity.setDescription(request.getDescription());
-        }
-        if (request.nsfw != null) {
-            entity.setNsfw(request.getNsfw());
-        }
-        if (request.isPrivate != null) {
-            entity.setPrivate(request.getIsPrivate());
-        }
-        if (request.getIconUrl() != null) {
-            entity.setIconUrl(request.getIconUrl());
-        }
-        if (request.getBannerUrl() != null) {
-            entity.setBannerUrl(request.getBannerUrl());
-        }
+        var patch = new GroupPatch(
+                request.getDisplayName(),
+                request.getDescription(),
+                request.getNsfw(),
+                request.getIsPrivate(),
+                request.getIconUrl(),
+                request.getBannerUrl()
+        );
+
+        entity.apply(patch);
 
         try {
             repository.saveAndFlush(entity);
