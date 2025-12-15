@@ -6,6 +6,7 @@ import com.galactus.group.dto.GroupDto;
 import com.galactus.common.helpers.Base36Codec;
 import com.galactus.common.mappers.GroupMapper;
 import com.galactus.group.dto.CreateGroupRequest;
+import com.galactus.group.dto.UpdateGroupRequest;
 import com.galactus.group.errors.GroupNotFoundException;
 import com.galactus.group.errors.SlugAlreadyTakenException;
 import com.galactus.group.persistence.GroupRepository;
@@ -58,6 +59,11 @@ public class GroupServiceImpl implements GroupService {
         return repository.findById(groupId)
                 .map(GroupMapper::toResponse)
                 .orElseThrow(() -> new GroupNotFoundException(groupId));
+    }
+
+    @Override
+    public GroupDto update(UpdateGroupRequest request) {
+        throw new UnsupportedOperationException("Feature incomplete.");
     }
 
     public List<GroupDto> findAll() {
