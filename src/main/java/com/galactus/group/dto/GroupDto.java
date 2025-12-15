@@ -1,4 +1,4 @@
-package com.galactus.domain.dto;
+package com.galactus.group.dto;
 
 import java.time.Instant;
 

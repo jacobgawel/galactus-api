@@ -1,4 +1,4 @@
-package com.galactus.domain.models;
+package com.galactus.group.dto;
 
 import lombok.Getter;
 

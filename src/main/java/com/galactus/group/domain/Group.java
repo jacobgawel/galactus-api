@@ -1,8 +1,6 @@
-package com.galactus.domain.database;
+package com.galactus.group.domain;
 
 
-import com.galactus.domain.constants.ContentTypePrefixes;
-import com.galactus.domain.helpers.Base36Codec;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

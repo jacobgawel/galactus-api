@@ -1,7 +1,7 @@
-package com.galactus.domain.interfaces;
+package com.galactus.group.application;
 
-import com.galactus.domain.dto.GroupDto;
-import com.galactus.domain.models.CreateGroupRequest;
+import com.galactus.group.dto.GroupDto;
+import com.galactus.group.dto.CreateGroupRequest;
 
 import java.util.List;
 import java.util.Optional;

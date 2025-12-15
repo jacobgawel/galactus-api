@@ -1,4 +1,4 @@
-package com.galactus.domain.helpers;
+package com.galactus.common.helpers;
 
 public class Base36Codec {
     private static final Long baseNumber = 1_000_000L;

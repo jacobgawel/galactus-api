@@ -1,4 +1,4 @@
-package com.galactus.domain.constants;
+package com.galactus.common.constants;
 
 public enum HealthType {
     HEALTHY,

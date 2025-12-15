@@ -1,4 +1,4 @@
-package com.galactus.controllers.graphql;
+package com.galactus.group.api.graphql;
 
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;

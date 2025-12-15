@@ -1,7 +1,7 @@
-package com.galactus.domain.mappers;
+package com.galactus.common.mappers;
 
-import com.galactus.domain.database.Group;
-import com.galactus.domain.dto.GroupDto;
+import com.galactus.group.domain.Group;
+import com.galactus.group.dto.GroupDto;
 
 public class GroupMapper {
     private GroupMapper() {

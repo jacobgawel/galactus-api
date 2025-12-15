@@ -1,7 +1,7 @@
-package com.galactus.controllers.rest;
+package com.galactus.health.api;
 
-import com.galactus.domain.constants.HealthType;
-import com.galactus.domain.dto.HealthDto;
+import com.galactus.common.constants.HealthType;
+import com.galactus.health.dto.HealthDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

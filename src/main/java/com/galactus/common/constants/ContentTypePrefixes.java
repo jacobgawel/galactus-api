@@ -1,4 +1,4 @@
-package com.galactus.domain.constants;
+package com.galactus.common.constants;
 
 public class ContentTypePrefixes {
     public final static String comment = "t1_";

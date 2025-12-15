@@ -1,13 +1,12 @@
-package com.galactus.service;
+package com.galactus.group.application;
 
-import com.galactus.domain.constants.ContentTypePrefixes;
-import com.galactus.domain.database.Group;
-import com.galactus.domain.dto.GroupDto;
-import com.galactus.domain.helpers.Base36Codec;
-import com.galactus.domain.interfaces.GroupService;
-import com.galactus.domain.mappers.GroupMapper;
-import com.galactus.domain.models.CreateGroupRequest;
-import com.galactus.persistence.GroupRepository;
+import com.galactus.common.constants.ContentTypePrefixes;
+import com.galactus.group.domain.Group;
+import com.galactus.group.dto.GroupDto;
+import com.galactus.common.helpers.Base36Codec;
+import com.galactus.common.mappers.GroupMapper;
+import com.galactus.group.dto.CreateGroupRequest;
+import com.galactus.group.persistence.GroupRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +17,22 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class DefaultGroupService implements GroupService {
+public class GroupServiceImpl implements GroupService {
     private final GroupRepository repository;
 
-    public DefaultGroupService(GroupRepository repository) {
+    public GroupServiceImpl(GroupRepository repository) {
         this.repository = repository;
     }
 
     @Transactional
     public GroupDto create(@NonNull CreateGroupRequest request) {
+
+        var exists = repository.existsBySlug(request.slug);
+
+        if (exists) {
+            return null;
+        }
+
         var entity = new Group();
 
         entity.setSlug(request.getSlug());

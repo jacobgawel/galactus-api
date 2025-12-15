@@ -1,8 +1,8 @@
-package com.galactus.controllers.rest;
+package com.galactus.group.api.rest;
 
-import com.galactus.domain.dto.GroupDto;
-import com.galactus.domain.interfaces.GroupService;
-import com.galactus.domain.models.CreateGroupRequest;
+import com.galactus.group.dto.GroupDto;
+import com.galactus.group.application.GroupService;
+import com.galactus.group.dto.CreateGroupRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

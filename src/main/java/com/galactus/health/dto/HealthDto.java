@@ -1,6 +1,6 @@
-package com.galactus.domain.dto;
+package com.galactus.health.dto;
 
-import com.galactus.domain.constants.HealthType;
+import com.galactus.common.constants.HealthType;
 
 public class HealthDto {
     public HealthType Status;
