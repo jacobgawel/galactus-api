@@ -6,6 +6,8 @@ import com.galactus.group.dto.GroupDto;
 import com.galactus.common.helpers.Base36Codec;
 import com.galactus.common.mappers.GroupMapper;
 import com.galactus.group.dto.CreateGroupRequest;
+import com.galactus.group.errors.GroupNotFoundException;
+import com.galactus.group.errors.SlugAlreadyTakenException;
 import com.galactus.group.persistence.GroupRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,7 @@ public class GroupServiceImpl implements GroupService {
         var exists = repository.existsBySlug(request.slug);
 
         if (exists) {
-            return null;
+            throw new SlugAlreadyTakenException(request.slug);
         }
 
         var entity = new Group();
@@ -53,8 +55,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Optional<GroupDto> getById(Long groupId) {
-        return repository.findById(groupId).map(GroupMapper::toResponse);
+    public GroupDto getById(Long groupId) {
+        return repository.findById(groupId)
+                .map(GroupMapper::toResponse)
+                .orElseThrow(() -> new GroupNotFoundException(groupId));
     }
 
     public List<GroupDto> findAll() {

@@ -3,6 +3,8 @@ package com.galactus.group.api.rest;
 import com.galactus.group.dto.GroupDto;
 import com.galactus.group.application.GroupService;
 import com.galactus.group.dto.CreateGroupRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +20,19 @@ public class GroupController {
     }
 
     @GetMapping
-    public List<GroupDto> findAll() {
-        return groupService.findAll();
+    public ResponseEntity<List<GroupDto>> findAll() {
+        var groups = groupService.findAll();
+        return ResponseEntity.ok(groups);
     }
 
     @PostMapping
-    public GroupDto create(@RequestBody CreateGroupRequest request) {
-        return groupService.create(request);
+    public ResponseEntity<GroupDto> create(@RequestBody CreateGroupRequest request) {
+        var created = groupService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping("{groupId}")
-    public Optional<GroupDto> getById(@PathVariable Long groupId) {
-        return groupService.getById(groupId);
+    public ResponseEntity<GroupDto> getById(@PathVariable Long groupId) {
+        return ResponseEntity.ok(groupService.getById(groupId));
     }
 }
