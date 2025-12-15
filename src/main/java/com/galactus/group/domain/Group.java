@@ -2,7 +2,7 @@ package com.galactus.group.domain;
 
 
 import com.galactus.group.dto.GroupPatch;
-import com.galactus.group.dto.UpdateGroupRequest;
+import com.galactus.thread.domain.Thread;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -57,6 +59,19 @@ public class Group {
     @Column(nullable = false)
     private boolean isPrivate = false;
 
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Thread> threads = new ArrayList<>();
+
+    public void addThread(Thread thread) {
+        threads.add(thread);
+        thread.setGroup(this);
+    }
+
+    public void removeThread(Thread thread) {
+        threads.remove(thread);
+        thread.setGroup(null);
+    }
+
     // TODO: eventually we need to add a createdBy user field
     // furthermore we will need to further decide how to showcase mods and admins
     // Future enhancements: transferring ownership, more customization via some json properties
@@ -70,10 +85,15 @@ public class Group {
     @PreUpdate
     @PrePersist
     public void normalize() {
-        // TODO: decide whether this should be lowercase
-        slug = slug.trim().toLowerCase();
-        displayName = displayName.trim();
-        description = description.trim();
+        if (slug != null) {
+            slug = slug.trim();
+        }
+        if (displayName != null) {
+            displayName = displayName.trim();
+        }
+        if (description != null) {
+            description = description.trim();
+        }
     }
 
     public void apply(GroupPatch request) {

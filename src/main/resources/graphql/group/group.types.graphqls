@@ -1,0 +1,23 @@
+type Group {
+    id: Int
+    slug: String
+    displayName: String
+    hashedId: String
+    description: String
+    iconUrl: String
+    bannerUrl: String
+    nsfw: Boolean
+    isPrivate: Boolean
+    createdAt: String
+    updatedAt: String
+}
+
+input UpdateGroupInput {
+    id: Int!
+    displayName: String
+    description: String
+    iconUrl: String
+    bannerUrl: String
+    nsfw: Boolean
+    isPrivate: Boolean
+}

@@ -19,7 +19,7 @@ public class GroupQueryResolver {
     }
 
     @QueryMapping
-    public GroupDto groupById(@Argument Long id) {
+    public GroupDto getGroupById(@Argument Long id) {
         return service.getById(id);
     }
 
@@ -29,7 +29,7 @@ public class GroupQueryResolver {
     }
 
     @MutationMapping
-    public GroupDto updateGroup(@Argument("input")UpdateGroupRequest input) {
+    public GroupDto updateGroup(@Argument("input") UpdateGroupRequest input) {
         return service.update(input);
     }
 }

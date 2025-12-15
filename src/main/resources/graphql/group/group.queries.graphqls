@@ -1,0 +1,8 @@
+extend type Query {
+    getGroupById(id: Int!): Group
+    getGroups: [Group!]
+}
+
+extend type Mutation {
+    updateGroup(input: UpdateGroupInput): Group!
+}

@@ -1,0 +1,10 @@
+type Thread {
+    id: Int
+    title: String
+    content: String
+    groupId: Int
+    upvoteCount: Int
+    downvoteCount: Int
+    createdAt: String
+    updatedAt: String
+}
