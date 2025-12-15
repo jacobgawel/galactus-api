@@ -26,32 +26,25 @@ public class GroupServiceImpl implements GroupService {
         this.repository = repository;
     }
 
-    @Transactional
     public GroupDto create(@NonNull CreateGroupRequest request) {
-
-        var exists = repository.existsBySlug(request.slug);
-
-        if (exists) {
-            throw new SlugAlreadyTakenException(request.slug);
-        }
-
         var entity = new Group();
-
         entity.setSlug(request.getSlug());
         entity.setDescription(request.getDescription());
         entity.setNsfw(request.isNsfw());
         entity.setPrivate(request.isPrivate());
         entity.setDisplayName(request.getDisplayName());
 
-        repository.saveAndFlush(entity);
+        try {
+            repository.save(entity);
+            repository.flush();
 
-        var hashedId = Base36Codec.generateUniqueId(ContentTypePrefixes.SPACE, entity.getId());
+            entity.setHashedId(Base36Codec.generateUniqueId(ContentTypePrefixes.SPACE, entity.getId()));
 
-        entity.setHashedId(hashedId);
+            return GroupMapper.toResponse(entity);
 
-        repository.save(entity);
-
-        return GroupMapper.toResponse(entity);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new SlugAlreadyTakenException(request.slug);
+        }
     }
 
     @Override
