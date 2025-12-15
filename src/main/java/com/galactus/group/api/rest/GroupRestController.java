@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/group")
-public class GroupController {
+public class GroupRestController {
     private final GroupService groupService;
 
-    public GroupController(GroupService groupService) {
+    public GroupRestController(GroupService groupService) {
         this.groupService = groupService;
     }
 

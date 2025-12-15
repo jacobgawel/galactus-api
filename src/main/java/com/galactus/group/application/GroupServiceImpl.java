@@ -43,7 +43,7 @@ public class GroupServiceImpl implements GroupService {
 
             entity.setHashedId(Base36Codec.generateUniqueId(ContentTypePrefixes.SPACE, entity.getId()));
 
-            return GroupMapper.toResponse(entity);
+            return GroupMapper.toDto(entity);
 
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             throw new SlugAlreadyTakenException(request.slug);
@@ -53,7 +53,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupDto getById(Long groupId) {
         return repository.findById(groupId)
-                .map(GroupMapper::toResponse)
+                .map(GroupMapper::toDto)
                 .orElseThrow(() -> new GroupNotFoundException(groupId));
     }
 
@@ -76,7 +76,7 @@ public class GroupServiceImpl implements GroupService {
 
         try {
             repository.saveAndFlush(entity);
-            return GroupMapper.toResponse(entity);
+            return GroupMapper.toDto(entity);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             throw new SlugAlreadyTakenException(entity.getSlug());
         }
@@ -85,7 +85,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupDto> findAll() {
         return repository.findAll()
                 .stream()
-                .map(GroupMapper::toResponse)
+                .map(GroupMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

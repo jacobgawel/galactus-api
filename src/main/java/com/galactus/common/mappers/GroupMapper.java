@@ -7,7 +7,7 @@ public class GroupMapper {
     private GroupMapper() {
     }
 
-    public static GroupDto toResponse(Group entity) {
+    public static GroupDto toDto(Group entity) {
         if (entity == null) {
             return null;
         }

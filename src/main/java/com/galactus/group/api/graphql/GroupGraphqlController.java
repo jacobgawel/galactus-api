@@ -11,10 +11,10 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 
 @Controller
-public class GroupQueryResolver {
+public class GroupGraphqlController {
     private final GroupService service;
 
-    public GroupQueryResolver(GroupService service) {
+    public GroupGraphqlController(GroupService service) {
         this.service = service;
     }
 
