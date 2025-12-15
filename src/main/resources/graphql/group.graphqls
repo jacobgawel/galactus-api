@@ -1,13 +1,14 @@
 type Query {
-    groupById(id: Int): Group
+    groupById(id: Int!): Group
+    getGroups: [Group!]
 }
 
 type Group {
     id: Int
     slug: String
     displayName: String
-    description: String
     hashedId: String
+    description: String
     iconUrl: String
     bannerUrl: String
     nsfw: Boolean

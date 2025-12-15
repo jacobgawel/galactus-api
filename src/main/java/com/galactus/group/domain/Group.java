@@ -65,6 +65,7 @@ public class Group {
     @PreUpdate
     @PrePersist
     public void normalize() {
+        // TODO: decide whether this should be lowercase
         slug = slug.trim().toLowerCase();
         displayName = displayName.trim();
         description = description.trim();

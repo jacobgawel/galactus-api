@@ -6,6 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Global REST exception handler for the API.
+ *
+ * <p>
+ * This class centralizes error handling for all {@code @RestController} endpoints.
+ * Instead of returning ad-hoc error DTOs (or letting exceptions bubble up into a generic 500),
+ * we convert known domain exceptions into consistent HTTP responses using Spring's
+ * {@link org.springframework.http.ProblemDetail}.
+ * </p>
+ **/
 @RestControllerAdvice
 public class RestApiExceptionHandler {
 

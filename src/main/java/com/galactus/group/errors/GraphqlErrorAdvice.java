@@ -10,6 +10,17 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.util.Map;
 
+/**
+ * Global GraphQL exception handler for the API.
+ *
+ * <p>
+ * This class centralizes error handling for GraphQL resolvers (Query/Mutation/DataFetchers).
+ * Instead of letting domain exceptions bubble up as generic {@code INTERNAL_ERROR} responses,
+ * we convert known exceptions into structured {@link graphql.GraphQLError} instances using
+ * {@link org.springframework.graphql.execution.GraphQlSource.Builder#exceptionResolvers}
+ * and Spring GraphQL's {@link org.springframework.graphql.data.method.annotation.GraphQlExceptionHandler}.
+ * </p>
+ **/
 @ControllerAdvice
 @SuppressWarnings("unused")
 public class GraphqlErrorAdvice {
