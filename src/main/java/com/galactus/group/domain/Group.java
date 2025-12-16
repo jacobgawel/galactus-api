@@ -62,16 +62,6 @@ public class Group {
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Thread> threads = new ArrayList<>();
 
-    public void addThread(Thread thread) {
-        threads.add(thread);
-        thread.setGroup(this);
-    }
-
-    public void removeThread(Thread thread) {
-        threads.remove(thread);
-        thread.setGroup(null);
-    }
-
     // TODO: eventually we need to add a createdBy user field
     // furthermore we will need to further decide how to showcase mods and admins
     // Future enhancements: transferring ownership, more customization via some json properties

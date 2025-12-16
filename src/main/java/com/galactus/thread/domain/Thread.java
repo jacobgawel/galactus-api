@@ -2,6 +2,7 @@ package com.galactus.thread.domain;
 
 import com.galactus.group.domain.Group;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Thread {
     @Column(nullable = false, updatable = false)
     private Long id;
 
+    @NotBlank
     @Size(min = 2, max = 300)
     private String title;
 
@@ -44,6 +46,17 @@ public class Thread {
     // ----- rough idea ----
     // upvote -> inserts row -> updates to +1
     // downvote -> deletes row -> updates to -1
+
+    @PrePersist
+    @PreUpdate
+    public void normalize() {
+        if (title != null) {
+            title = title.trim();
+        }
+        if (content != null) {
+            content = content.trim();
+        }
+    }
 
     @CreationTimestamp
     private Instant createdAt;
