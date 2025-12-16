@@ -11,4 +11,5 @@ public interface GroupService {
     GroupDto create(CreateGroupRequest request);
     GroupDto getById(Long groupId);
     GroupDto update(UpdateGroupRequest request);
+    void delete(Long groupId);
 }

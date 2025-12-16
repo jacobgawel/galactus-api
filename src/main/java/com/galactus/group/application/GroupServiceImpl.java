@@ -11,6 +11,7 @@ import com.galactus.group.dto.UpdateGroupRequest;
 import com.galactus.group.errors.GroupNotFoundException;
 import com.galactus.group.errors.SlugAlreadyTakenException;
 import com.galactus.group.persistence.GroupRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class GroupServiceImpl implements GroupService {
@@ -25,6 +27,20 @@ public class GroupServiceImpl implements GroupService {
 
     public GroupServiceImpl(GroupRepository repository) {
         this.repository = repository;
+    }
+
+    public List<GroupDto> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(GroupMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public GroupDto getById(Long groupId) {
+        return repository.findById(groupId)
+                .map(GroupMapper::toDto)
+                .orElseThrow(() -> new GroupNotFoundException(groupId));
     }
 
     @Override
@@ -38,23 +54,19 @@ public class GroupServiceImpl implements GroupService {
         entity.setDisplayName(request.getDisplayName());
 
         try {
-            repository.save(entity);
-            repository.flush();
+            repository.saveAndFlush(entity);
 
             entity.setHashedId(Base36Codec.generateUniqueId(ContentTypePrefixes.SPACE, entity.getId()));
+
+            log.info("event=group.create outcome=success id={}, slug={}, hashedId={}",
+                    entity.getId(), entity.getSlug(), entity.getHashedId());
 
             return GroupMapper.toDto(entity);
 
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-            throw new SlugAlreadyTakenException(request.slug);
+            log.warn("event=group.create outcome=conflict reason=slug_taken slug={}", request.getSlug());
+            throw new SlugAlreadyTakenException(request.getSlug());
         }
-    }
-
-    @Override
-    public GroupDto getById(Long groupId) {
-        return repository.findById(groupId)
-                .map(GroupMapper::toDto)
-                .orElseThrow(() -> new GroupNotFoundException(groupId));
     }
 
     @Override
@@ -76,16 +88,24 @@ public class GroupServiceImpl implements GroupService {
 
         try {
             repository.saveAndFlush(entity);
+
+            log.info("event=group.update outcome=success group_id={} slug={}", entity.getId(), entity.getSlug());
+
             return GroupMapper.toDto(entity);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            log.warn("event=group.update outcome=conflict reason=slug_taken group_id={} slug={}",
+                    entity.getId(), entity.getSlug());
             throw new SlugAlreadyTakenException(entity.getSlug());
         }
     }
 
-    public List<GroupDto> findAll() {
-        return repository.findAll()
-                .stream()
-                .map(GroupMapper::toDto)
-                .collect(Collectors.toList());
+    @Override
+    @Transactional
+    public void delete(Long groupId) {
+        var entity = repository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
+
+        repository.delete(entity);
+
+        log.info("event=group.delete outcome=success group_id={} slug={}", entity.getId(), entity.getSlug());
     }
 }

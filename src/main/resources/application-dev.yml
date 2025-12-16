@@ -35,3 +35,9 @@ server:
   port: 8065
   servlet:
     context-path: /
+
+logging:
+  level:
+    com.galactus: DEBUG
+    root: INFO
+

@@ -1,7 +1,6 @@
 package com.galactus.thread.application;
 
 import com.galactus.common.mappers.ThreadMapper;
-import com.galactus.group.dto.GroupDto;
 import com.galactus.group.errors.GroupNotFoundException;
 import com.galactus.group.persistence.GroupRepository;
 import com.galactus.thread.domain.Thread;
@@ -11,12 +10,14 @@ import com.galactus.thread.dto.UpdateThreadRequest;
 import com.galactus.thread.errors.ThreadNotFoundException;
 import com.galactus.thread.persistence.ThreadRepository;
 import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class ThreadServiceImpl implements ThreadService {
@@ -50,6 +51,8 @@ public class ThreadServiceImpl implements ThreadService {
 
         threadRepository.save(entity);
 
+        log.info("event=thread.create outcome=success id={} group_id={}", entity.getId(), request.getGroupId());
+
         return ThreadMapper.toDto(entity);
     }
 
@@ -74,6 +77,8 @@ public class ThreadServiceImpl implements ThreadService {
         if (request.getContent() != null) {
             entity.setContent(request.getContent());
         }
+
+        log.info("event=thread.update outcome=success thread_id={}", entity.getId());
 
         return ThreadMapper.toDto(entity);
     }

@@ -42,4 +42,10 @@ public class GroupRestController {
     public ResponseEntity<GroupDto> getById(@PathVariable Long groupId) {
         return ResponseEntity.ok(service.getById(groupId));
     }
+
+    @DeleteMapping("{groupId}")
+    public ResponseEntity<Object> delete(@PathVariable Long groupId) {
+        service.delete(groupId);
+        return ResponseEntity.noContent().build();
+    }
 }
