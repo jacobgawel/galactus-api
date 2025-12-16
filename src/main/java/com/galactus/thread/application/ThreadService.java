@@ -11,4 +11,5 @@ public interface ThreadService {
     ThreadDto create(CreateThreadRequest request);
     ThreadDto getById(Long id);
     ThreadDto update(UpdateThreadRequest request);
+    List<ThreadDto> findByGroupIdPaged(Long groupId , int limit, int offset);
 }

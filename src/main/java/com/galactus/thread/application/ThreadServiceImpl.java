@@ -1,6 +1,7 @@
 package com.galactus.thread.application;
 
 import com.galactus.common.mappers.ThreadMapper;
+import com.galactus.group.dto.GroupDto;
 import com.galactus.group.errors.GroupNotFoundException;
 import com.galactus.group.persistence.GroupRepository;
 import com.galactus.thread.domain.Thread;
@@ -75,5 +76,21 @@ public class ThreadServiceImpl implements ThreadService {
         }
 
         return ThreadMapper.toDto(entity);
+    }
+
+    @Override
+    public List<ThreadDto> findByGroupIdPaged(Long groupId, int limit, int offset) {
+        var threads = threadRepository.findByGroupIdPaged(groupId, limit, offset);
+        return threads.stream()
+                .map((r) -> new ThreadDto(
+                        r.getId(),
+                        r.getTitle(),
+                        r.getContent(),
+                        r.getGroupId(),
+                        r.getUpvoteCount() == null ? 0 : r.getUpvoteCount(),
+                        r.getDownvoteCount() == null ? 0 : r.getDownvoteCount(),
+                        r.getCreatedAt().getTimestamp().toInstant(),
+                        r.getUpdatedAt().getTimestamp().toInstant()
+                )).collect(Collectors.toList());
     }
 }
