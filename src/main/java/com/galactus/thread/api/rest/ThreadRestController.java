@@ -25,6 +25,15 @@ public class ThreadRestController {
         return ResponseEntity.ok(threads);
     }
 
+    @GetMapping(params = "groupId")
+    public ResponseEntity<List<ThreadDto>> findAllByGroupId(
+            @RequestParam("groupId") Long groupId,
+            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(defaultValue = "0") int offset
+    ) {
+        return ResponseEntity.ok(service.findByGroupIdPaged(groupId, limit, offset));
+    }
+
     @GetMapping("{threadId}")
     public ResponseEntity<ThreadDto> getById(@PathVariable Long threadId) {
         return ResponseEntity.ok(service.getById(threadId));

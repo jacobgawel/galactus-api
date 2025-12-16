@@ -85,7 +85,12 @@ public class ThreadServiceImpl implements ThreadService {
 
     @Override
     public List<ThreadDto> findByGroupIdPaged(Long groupId, int limit, int offset) {
+        if (!groupRepository.existsById(groupId)) {
+            throw new GroupNotFoundException(groupId);
+        }
+
         var threads = threadRepository.findByGroupIdPaged(groupId, limit, offset);
+
         return threads.stream()
                 .map((r) -> new ThreadDto(
                         r.getId(),
