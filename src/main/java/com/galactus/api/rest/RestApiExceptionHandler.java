@@ -1,5 +1,8 @@
-package com.galactus.group.errors;
+package com.galactus.api.rest;
 
+import com.galactus.group.errors.GroupNotFoundException;
+import com.galactus.group.errors.SlugAlreadyTakenException;
+import com.galactus.thread.errors.ThreadNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -33,4 +36,10 @@ public class RestApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pd);
     }
 
+    @ExceptionHandler(ThreadNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleThreadNotFound(ThreadNotFoundException ex) {
+        var pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        pd.setTitle("Thread not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pd);
+    }
 }

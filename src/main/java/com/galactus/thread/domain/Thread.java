@@ -37,8 +37,8 @@ public class Thread {
 
     // NOTE: temporarily using integers until I configure authorization
     // the real solution should be connected to users
-    private Integer upvoteCount;
-    private Integer downvoteCount;
+    private Integer upvoteCount = 0;
+    private Integer downvoteCount = 0;
     // counter above will be there to prevent re-counting votes on every page load
     // values will be incremented during the same db transaction to keep strong consistency
     // ----- rough idea ----

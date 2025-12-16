@@ -14,32 +14,32 @@ import java.util.List;
 @RestController
 @RequestMapping("api/group")
 public class GroupRestController {
-    private final GroupService groupService;
+    private final GroupService service;
 
-    public GroupRestController(GroupService groupService) {
-        this.groupService = groupService;
+    public GroupRestController(GroupService service) {
+        this.service = service;
     }
 
     @GetMapping
     public ResponseEntity<List<GroupDto>> findAll() {
-        var groups = groupService.findAll();
+        var groups = service.findAll();
         return ResponseEntity.ok(groups);
     }
 
     @PostMapping
     public ResponseEntity<GroupDto> create(@Valid @RequestBody CreateGroupRequest request) {
-        var created = groupService.create(request);
+        var created = service.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping
     public ResponseEntity<GroupDto> update(@Valid @RequestBody UpdateGroupRequest request) {
-        var updated = groupService.update(request);
+        var updated = service.update(request);
         return ResponseEntity.ok(updated);
     }
 
     @GetMapping("{groupId}")
     public ResponseEntity<GroupDto> getById(@PathVariable Long groupId) {
-        return ResponseEntity.ok(groupService.getById(groupId));
+        return ResponseEntity.ok(service.getById(groupId));
     }
 }

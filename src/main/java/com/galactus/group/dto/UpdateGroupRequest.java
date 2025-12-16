@@ -1,6 +1,7 @@
 package com.galactus.group.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class UpdateGroupRequest {
     @NotBlank
+    @Positive(message = "GroupID must be a positive number")
     public Long id;
 
     @Size(max = 80)
@@ -23,6 +25,7 @@ public class UpdateGroupRequest {
 
     @Size(max = 500)
     public String bannerUrl;
+
     public Boolean nsfw; // boxed boolean meaning that this can be null
     public Boolean isPrivate;
 }

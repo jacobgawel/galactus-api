@@ -1,6 +1,8 @@
-package com.galactus.group.errors;
+package com.galactus.api.graphql;
 
 import com.galactus.common.constants.GraphqlConstants;
+import com.galactus.group.errors.GroupNotFoundException;
+import com.galactus.thread.errors.ThreadNotFoundException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
@@ -23,9 +25,18 @@ import java.util.Map;
  **/
 @ControllerAdvice
 @SuppressWarnings("unused")
-public class GraphqlErrorAdvice {
+public class GraphqlErrorHandler {
     @GraphQlExceptionHandler(GroupNotFoundException.class)
     public GraphQLError handleGroupNotFound(GroupNotFoundException ex, DataFetchingEnvironment env) {
+        return GraphqlErrorBuilder.newError(env)
+                .errorType(ErrorType.NOT_FOUND)
+                .message(ex.getMessage())
+                .extensions(Map.of("code", GraphqlConstants.NOT_FOUND))
+                .build();
+    }
+
+    @GraphQlExceptionHandler(ThreadNotFoundException.class)
+    public GraphQLError handleThreadNotFound(ThreadNotFoundException ex, DataFetchingEnvironment env) {
         return GraphqlErrorBuilder.newError(env)
                 .errorType(ErrorType.NOT_FOUND)
                 .message(ex.getMessage())

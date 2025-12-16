@@ -2,3 +2,7 @@ extend type Query {
     getThreads: [Thread!]
     getThreadById(id: Int!): Thread
 }
+
+extend type Mutation {
+    updateThread(input: UpdateThreadInput): Thread
+}

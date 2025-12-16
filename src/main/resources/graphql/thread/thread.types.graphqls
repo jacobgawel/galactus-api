@@ -8,3 +8,9 @@ type Thread {
     createdAt: String
     updatedAt: String
 }
+
+input UpdateThreadInput {
+    id: Int!
+    title: String
+    content: String
+}
