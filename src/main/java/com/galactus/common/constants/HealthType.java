@@ -5,4 +5,3 @@ public enum HealthType {
     DEGRADED,
     UNHEALTHY
 }
-

@@ -23,6 +23,8 @@ public class Thread {
     @Column(nullable = false, updatable = false)
     private Long id;
 
+    private String hashedId;
+
     @NotBlank
     @Size(min = 2, max = 300)
     private String title;

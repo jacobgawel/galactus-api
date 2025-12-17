@@ -13,6 +13,7 @@ public interface ThreadRepository extends JpaRepository<Thread, Long> {
             SELECT * FROM (
                 SELECT\s
                     t.id AS id,\s
+                    t.hashed_id AS hashedId,\s
                     t.title AS title,\s
                     t.content AS content,\s
                     t.group_id AS groupId,

@@ -1,5 +1,7 @@
 package com.galactus.thread.application;
 
+import com.galactus.common.constants.ContentTypePrefixes;
+import com.galactus.common.helpers.Base36Codec;
 import com.galactus.common.mappers.ThreadMapper;
 import com.galactus.group.errors.GroupNotFoundException;
 import com.galactus.group.persistence.GroupRepository;
@@ -49,9 +51,12 @@ public class ThreadServiceImpl implements ThreadService {
         entity.setContent(request.getContent());
         entity.setGroup(group);
 
-        threadRepository.save(entity);
+        threadRepository.saveAndFlush(entity);
 
-        log.info("event=thread.create outcome=success id={} group_id={}", entity.getId(), request.getGroupId());
+        entity.setHashedId(Base36Codec.generateUniqueId(ContentTypePrefixes.POST, entity.getId()));
+
+        log.info("event=thread.create outcome=success id={} group_id={} hashed_id={}",
+                entity.getId(), request.getGroupId(), entity.getHashedId());
 
         return ThreadMapper.toDto(entity);
     }
@@ -94,6 +99,7 @@ public class ThreadServiceImpl implements ThreadService {
         return threads.stream()
                 .map((r) -> new ThreadDto(
                         r.getId(),
+                        r.getHashedId(),
                         r.getTitle(),
                         r.getContent(),
                         r.getGroupId(),
