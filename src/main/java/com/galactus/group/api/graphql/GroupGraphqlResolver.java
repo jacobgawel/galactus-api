@@ -5,6 +5,7 @@ import com.galactus.thread.application.ThreadService;
 import com.galactus.thread.dto.ThreadDto;
 import com.galactus.topics.application.TopicService;
 import com.galactus.topics.dto.TopicDto;
+import jakarta.annotation.Nullable;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
@@ -26,10 +27,13 @@ public class GroupGraphqlResolver {
     @SchemaMapping(typeName = "Group", field = "threads")
     public List<ThreadDto> threads(
             GroupDto groups,
-            @Argument int limit,
-            @Argument int offset
+            // these need to be nullable here too since in the schema they are nullable
+            @Argument @Nullable Integer limit,
+            @Argument @Nullable Integer offset
     ) {
-        return threadService.findByGroupIdPaged(groups.id(), limit, offset);
+        int effectiveLimit = (limit != null) ? limit : 20;
+        int effectiveOffset = (offset != null) ? offset : 0;
+        return threadService.findByGroupIdPaged(groups.id(), effectiveLimit, effectiveOffset);
     }
 
     @SchemaMapping(typeName = "Group", field = "topic")

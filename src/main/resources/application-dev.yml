@@ -15,8 +15,8 @@ spring:
   datasource:
     url: jdbc:sqlserver://;serverName=localhost;databaseName=galactusdb;encrypt=true;trustServerCertificate=true;
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: sa
-    password: Pass123$
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     hikari:
       maximum-pool-size: 20
       minimum-idle: 10
