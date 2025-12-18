@@ -1,0 +1,4 @@
+extend type Query {
+    getTopics: [Topic!]
+    getTopicById(id: Int): Topic
+}

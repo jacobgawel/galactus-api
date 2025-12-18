@@ -10,6 +10,7 @@ public record GroupDto (
         String description,
         String iconUrl,
         String bannerUrl,
+        Integer topicId,
         boolean nsfw,
         boolean isPrivate,
         Instant createdAt,

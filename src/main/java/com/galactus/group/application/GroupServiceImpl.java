@@ -11,6 +11,8 @@ import com.galactus.group.dto.UpdateGroupRequest;
 import com.galactus.group.errors.GroupNotFoundException;
 import com.galactus.group.errors.SlugAlreadyTakenException;
 import com.galactus.group.persistence.GroupRepository;
+import com.galactus.topics.errors.TopicNotFoundException;
+import com.galactus.topics.persistence.TopicRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,16 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class GroupServiceImpl implements GroupService {
-    private final GroupRepository repository;
+    private final GroupRepository groupRepository;
+    private final TopicRepository topicRepository;
 
-    public GroupServiceImpl(GroupRepository repository) {
-        this.repository = repository;
+    public GroupServiceImpl(GroupRepository groupRepository, TopicRepository topicRepository) {
+        this.groupRepository = groupRepository;
+        this.topicRepository = topicRepository;
     }
 
     public List<GroupDto> findAll() {
-        return repository.findAll()
+        return groupRepository.findAll()
                 .stream()
                 .map(GroupMapper::toDto)
                 .collect(Collectors.toList());
@@ -38,7 +42,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto getById(Long groupId) {
-        return repository.findById(groupId)
+        return groupRepository.findById(groupId)
                 .map(GroupMapper::toDto)
                 .orElseThrow(() -> new GroupNotFoundException(groupId));
     }
@@ -47,14 +51,19 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     public GroupDto create(@NonNull CreateGroupRequest request) {
         var entity = new Group();
+
+        var topic = topicRepository.findById(request.getTopicId())
+                .orElseThrow(() -> new TopicNotFoundException(request.getTopicId()));
+
         entity.setSlug(request.getSlug());
         entity.setDescription(request.getDescription());
         entity.setNsfw(request.isNsfw());
         entity.setPrivate(request.isPrivate());
         entity.setDisplayName(request.getDisplayName());
+        entity.setTopic(topic);
 
         try {
-            repository.saveAndFlush(entity);
+            groupRepository.saveAndFlush(entity);
 
             entity.setHashedId(Base36Codec.generateUniqueId(ContentTypePrefixes.SPACE, entity.getId()));
 
@@ -72,7 +81,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupDto update(UpdateGroupRequest request) {
-        var entity = repository.findById(request.getId())
+        var entity = groupRepository.findById(request.getId())
                 .orElseThrow(() -> new GroupNotFoundException(request.getId()));
 
         var patch = new GroupPatch(
@@ -87,7 +96,7 @@ public class GroupServiceImpl implements GroupService {
         entity.apply(patch);
 
         try {
-            repository.saveAndFlush(entity);
+            groupRepository.saveAndFlush(entity);
 
             log.info("event=group.update outcome=success group_id={} slug={}", entity.getId(), entity.getSlug());
 
@@ -102,9 +111,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public void delete(Long groupId) {
-        var entity = repository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
+        var entity = groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
 
-        repository.delete(entity);
+        groupRepository.delete(entity);
 
         log.info("event=group.delete outcome=success group_id={} slug={}", entity.getId(), entity.getSlug());
     }

@@ -3,6 +3,7 @@ package com.galactus.group.domain;
 
 import com.galactus.group.dto.GroupPatch;
 import com.galactus.thread.domain.Thread;
+import com.galactus.topics.domain.Topic;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -58,6 +59,13 @@ public class Group {
 
     @Column(nullable = false)
     private boolean isPrivate = false;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_groups_topic")
+    )
+    private Topic topic;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Thread> threads = new ArrayList<>();

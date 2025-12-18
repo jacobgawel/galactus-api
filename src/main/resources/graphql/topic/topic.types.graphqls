@@ -1,0 +1,7 @@
+type Topic {
+    id: Int
+    displayName: String
+    emoji: String
+    createdAt: String
+    updatedAt: String
+}

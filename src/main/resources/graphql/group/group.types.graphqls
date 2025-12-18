@@ -1,6 +1,7 @@
 type Group {
     id: Int
     slug: String
+    topicId: Int
     displayName: String
     hashedId: String
     description: String
@@ -11,6 +12,7 @@ type Group {
     createdAt: String
     updatedAt: String
     threads(limit: Int = 20, offset: Int = 0): [Thread]
+    topic: Topic
 }
 
 input UpdateGroupInput {

@@ -20,6 +20,7 @@ public class GroupMapper {
                 entity.getDescription(),
                 entity.getIconUrl(),
                 entity.getBannerUrl(),
+                entity.getTopic().getId(),
                 entity.isNsfw(),
                 entity.isPrivate(),
                 entity.getCreatedAt(),
