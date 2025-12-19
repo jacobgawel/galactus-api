@@ -50,8 +50,9 @@ logging:
     root: INFO
 
 archaius:
-  dynamic-url: "file:///F:/Java/galactus-api/src/main/resources/config.properties"
+  dynamic-url: ${DYNAMIC_URL}
   # dynamic-url: "file:/etc/galactus/galactus-dynamic.properties" # Linux example
+  # dynamic-url: "file:///F:/Java/galactus-api/src/main/resources/config.properties" # windows example
   polling-interval: 5s
   defaults:
     app.name: "galactus-api"
