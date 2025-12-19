@@ -31,6 +31,14 @@ spring:
 
     open-in-view: false
 
+  temporal:
+    namespace: default
+    connection:
+      target: 127.0.0.1:7233
+    workers-auto-discovery:
+      packages: com.galactus
+
+
 server:
   port: 8065
   servlet:
@@ -41,3 +49,10 @@ logging:
     com.galactus: DEBUG
     root: INFO
 
+archaius:
+  dynamic-url: "file:///F:/Java/galactus-api/src/main/resources/config.properties"
+  # dynamic-url: "file:/etc/galactus/galactus-dynamic.properties" # Linux example
+  polling-interval: 5s
+  defaults:
+    app.name: "galactus-api"
+    app.feature.toggle: "true"

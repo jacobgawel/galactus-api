@@ -6,6 +6,7 @@ import com.galactus.topics.dto.CreateTopicRequest;
 import com.galactus.topics.dto.TopicDto;
 import com.galactus.topics.errors.TopicNotFoundException;
 import com.galactus.topics.persistence.TopicRepository;
+import io.temporal.client.WorkflowClient;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository repository;
+    private final WorkflowClient workflowClient;
 
-    public TopicServiceImpl(TopicRepository repository) {
+    public TopicServiceImpl(TopicRepository repository, WorkflowClient workflowClient) {
         this.repository = repository;
+        this.workflowClient = workflowClient;
     }
 
     @Override
