@@ -5,5 +5,3 @@
 - GraphQL
 - Spring Boot 4.0.0
 - Java version 25
-- Temporal
-
