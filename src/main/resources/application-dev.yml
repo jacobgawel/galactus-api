@@ -31,13 +31,6 @@ spring:
 
     open-in-view: false
 
-  temporal:
-    namespace: default
-    connection:
-      target: 127.0.0.1:7233
-    workers-auto-discovery:
-      packages: com.galactus
-
 
 server:
   port: 8065
