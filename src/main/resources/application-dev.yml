@@ -15,8 +15,8 @@ spring:
   datasource:
     url: jdbc:sqlserver://;serverName=localhost;databaseName=galactusdb;encrypt=true;trustServerCertificate=true;
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: sa
-    password: Pass123$
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     hikari:
       maximum-pool-size: 20
       minimum-idle: 10
@@ -31,6 +31,7 @@ spring:
 
     open-in-view: false
 
+
 server:
   port: 8065
   servlet:
@@ -41,3 +42,11 @@ logging:
     com.galactus: DEBUG
     root: INFO
 
+archaius:
+  dynamic-url: ${DYNAMIC_URL}
+  # dynamic-url: "file:/etc/galactus/galactus-dynamic.properties" # Linux example
+  # dynamic-url: "file:///F:/Java/galactus-api/src/main/resources/config.properties" # windows example
+  polling-interval: 5s
+  defaults:
+    app.name: "galactus-api"
+    app.feature.toggle: "true"
